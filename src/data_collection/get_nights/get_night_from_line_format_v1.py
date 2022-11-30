@@ -1,12 +1,12 @@
 from datetime import datetime as dt
 
 from night import Night
-from utils import get_date_from_str
+import utils
 
 
 def get_night_from_line_format_v1(split):
-    measurement_start = get_date_from_str(split[0])
-    measurement_end = get_date_from_str(split[1])
+    measurement_start = utils.dates.get_date_from_str(split[0])
+    measurement_end = utils.dates.get_date_from_str(split[1])
     date = dt(
         measurement_start.year, measurement_start.month, measurement_start.day
     )

@@ -9,6 +9,7 @@ from tqdm import tqdm
 
 from config import PATH_TO_FIGURES
 from utils.cprint import cprint
+import utils
 
 
 def create_moving_avg_plot(note_name, note_history):
@@ -25,7 +26,8 @@ def create_moving_avg_plot(note_name, note_history):
 
 
 if __name__ == "__main__":
-    nights = data_collection.get_nights()
+    _ = data_collection.get_nights()
+    nights = utils.file_io.load_nights_from_file()
 
     # TODO 1. save complete sleep history to file
     # TODO 2. load complete sleep history from file
@@ -48,8 +50,7 @@ if __name__ == "__main__":
             note = rename_note(note)
             notes[note][date] = True
 
-    cprint("\n Creating plots...")
-    for note_name in tqdm(notes):
-        create_moving_avg_plot(note_name, notes[note_name])
+    # cprint("\n Creating plots...")
+    # for note_name in tqdm(notes):
+    #     create_moving_avg_plot(note_name, notes[note_name])
 
-    # print(notes)
