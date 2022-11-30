@@ -1,6 +1,7 @@
 class Night:
     def __init__(
         self,
+        date,
         measurement_start,
         measurement_end,
         measurement_duration_in_s,
@@ -23,6 +24,7 @@ class Night:
         weather_temp_in_c=None,
         weather_type=None,
     ):
+        self.date = date
         self.measurement_start = measurement_start
         self.measurement_end = measurement_end
         self.sleep_quality = sleep_quality
