@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import data_collection
 import data_preparation
+import data_processing
 import data_visualization
 
 # DONE 1. save complete sleep history to file
