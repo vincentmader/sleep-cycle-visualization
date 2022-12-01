@@ -1,6 +1,6 @@
 .DS_Store
 /data/
-/figures/
+/figures.nosync/
 /venv/
 __pycache__/
 /bin/utils/cprint

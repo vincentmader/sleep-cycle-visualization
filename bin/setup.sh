@@ -10,7 +10,6 @@
     git clone https://github.com/vincentmader/colored-echo.sh ./utils/cprint
 
 #   Create directory hierarchy.
-    cd "../data/nights/"
-    cd "../data/time_series/"
-    cd "../data/time_series/sleep_notes/"
-    cd "../figures/Sleep-Note Usage vs. Time (moving avg.)/"
+    mkdir "../data/nights/"
+    mkdir "../data/time_series/"
+    mkdir "../data/time_series/sleep_notes/"

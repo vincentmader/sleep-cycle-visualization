@@ -6,7 +6,9 @@ path_to_remove=(
     "../data/out/nights"
     "../data/out/time_series/sleep_notes"
     "../data/out/sleep_notes"
-    "../figures/sleep_notes" 
+    "../figures.nosync/sleep_cycle" 
+    "../figures.nosync/sleep_history" 
+    "../figures.nosync/sleep_notes" 
 )
 echo
 for path in "${path_to_remove[@]}"; do

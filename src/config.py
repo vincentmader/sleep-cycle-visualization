@@ -4,7 +4,7 @@ import os
 
 PATH_TO_DATA = "../data/"
 PATH_TO_SC_EXPORTS = os.path.join(PATH_TO_DATA, "in", "exports")
-PATH_TO_FIGURES = "../figures"
+PATH_TO_FIGURES = "../figures.nosync"
 
 START_DATE = dt(2013, 1, 1)
 

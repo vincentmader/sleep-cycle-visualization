@@ -15,7 +15,7 @@ N = 50
 
 
 def plot_sleep_cycle_usage():
-    cprint("\n Plotting SleepCycle usage...")
+    cprint(" Plotting SleepCycle usage...")
 
     timeseries = load_sleepcycle_usage_from_file()
 

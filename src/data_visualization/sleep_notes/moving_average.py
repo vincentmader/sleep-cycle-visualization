@@ -18,7 +18,7 @@ N = 50
 
 
 def plot_moving_average():
-    cprint("\n Plotting sleep-note moving-averages...")
+    cprint(" Plotting sleep-note moving-averages...")
 
     plt.style.use(MPL_THEME)
     fig = plt.figure(figsize=(10, 5))

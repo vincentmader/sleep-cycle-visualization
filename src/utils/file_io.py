@@ -112,3 +112,4 @@ def load_sleepcycle_usage_from_file():
     with open(path_to_savefile, 'rb') as fp:
         data = pickle.load(fp)
     return data
+

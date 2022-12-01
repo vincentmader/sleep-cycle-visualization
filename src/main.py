@@ -14,14 +14,19 @@ import data_visualization
 
 
 def collect():
+    print()
     data_collection.nights.all_nights.get_all_nights()
 
 
 def prepare():
+    print()
     data_preparation.sleep_cycle.usage.get_usage()
     data_preparation.sleep_notes.names.get_sleepnote_names()
     data_preparation.sleep_notes.names.get_translated_sleepnote_names()
     data_preparation.sleep_notes.time_series.construct_sleepnote_timeseries()
+    data_preparation.sleep_history.sleep_quality.get_sleep_quality_over_time()
+    data_preparation.sleep_history.bedtimes.get_bedtimes_over_time()
+    data_preparation.sleep_history.wakeup_mood.get_wakeup_mood_over_time()
 
 
 def process():
@@ -29,7 +34,9 @@ def process():
 
 
 def visualize():
+    print()
     data_visualization.sleep_cycle.usage.plot_sleep_cycle_usage()
+    data_visualization.sleep_history.sleep_snake.plot_sleep_snake()
     data_visualization.sleep_notes.moving_average.plot_moving_average()
 
 

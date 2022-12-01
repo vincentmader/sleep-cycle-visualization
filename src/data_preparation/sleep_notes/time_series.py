@@ -1,5 +1,3 @@
-from tqdm import tqdm
-
 import utils
 from utils.cprint import cprint
 from utils.dates import prepare_empty_timeseries
@@ -21,7 +19,7 @@ def construct_sleepnote_timeseries():
             ...
         }
     """
-    cprint("\n Constructing sleep-note time-series objects...")
+    cprint(" Constructing sleep-note time-series objects...")
 
     # Load list of all nights as `night.Night` object instances.
     nights = utils.file_io.load_nights_from_file()
@@ -48,11 +46,11 @@ def construct_sleepnote_timeseries():
 
     # Save time-series for each sleep-note to file.
     translations = load_translated_sleepnote_names_from_file()
-    for sleepnote in tqdm(translations):
+    for sleepnote in translations:
         utils.file_io.save_sleepnote_timeseries_to_file(
             timeseries[sleepnote], sleepnote
         )
 
-    msg = f" SUCCESS: Constructed time-series object for {len(sleepnotes)} -> {len(translations)} sleep-notes."
+    msg = f"   SUCCESS: Constructed time-series object for {len(sleepnotes)} -> {len(translations)} sleep-notes."
     cprint(msg, "green")
     return timeseries
