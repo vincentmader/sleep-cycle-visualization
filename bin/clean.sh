@@ -3,9 +3,9 @@
 YELLOW='\033[1;33m'
 
 path_to_remove=( 
-    "../data/nights"
-    "../data/time_series/sleep_notes"
-    "../figures/Sleep-Note Usage vs. Time (moving avg.)" 
+    "../data/out/nights"
+    "../data/out/time_series/sleep_notes"
+    "../figures/sleep_notes" 
 )
 echo
 for path in "${path_to_remove[@]}"; do

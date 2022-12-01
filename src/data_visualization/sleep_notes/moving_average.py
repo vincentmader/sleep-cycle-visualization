@@ -90,7 +90,7 @@ def plot_moving_average():
         # ax.get_yaxis().set_ticks([])
 
         filename = f"{sleepnote}.png"
-        path_to_figures = os.path.join(PATH_TO_FIGURES, "foo")
+        path_to_figures = os.path.join(PATH_TO_FIGURES, "sleep_notes")
         path_to_savefile = os.path.join(path_to_figures, filename)
         plt.savefig(path_to_savefile)
         plt.close()
