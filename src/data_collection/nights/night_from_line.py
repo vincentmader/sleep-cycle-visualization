@@ -1,5 +1,5 @@
-from .get_night_from_line_format_v1 import get_night_from_line_format_v1
-from .get_night_from_line_format_v2 import get_night_from_line_format_v2
+from .night_from_line_format_v1 import get_night_from_line_format_v1
+from .night_from_line_format_v2 import get_night_from_line_format_v2
 
 
 def get_night_from_line(line, export_type):
