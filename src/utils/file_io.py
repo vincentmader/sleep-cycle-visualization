@@ -51,7 +51,7 @@ def load_sleepnote_timeseries_from_file(sn_name):
     path_to_savefile = os.path.join(
         PATH_TO_DATA, "time_series", "sleep_notes", f"{sn_name}.p"
     )
-    with open(path_to_savefile, 'wb') as fp:
+    with open(path_to_savefile, 'rb') as fp:
         data = pickle.load(fp)
     return data
 

@@ -34,16 +34,30 @@ def construct_sleepnote_timeseries_objects():
 
     for night in nights:
         date = night.date
-        for sleepnote in night.sleep_notes:
-            if sleepnote in config.SLEEPNOTES_TO_SKIP:
+        for sn_1 in sleepnotes:
+            if sn_1 in config.SLEEPNOTES_TO_SKIP:
                 continue
-            sleepnote = translate_sleepnote(sleepnote)
-            timeseries[sleepnote][date.timestamp()] = True
+            sn_1 = translate_sleepnote(sn_1)
+            found = False
+            for sn_2 in night.sleep_notes:
+                sn_2 = translate_sleepnote(sn_2)
+                if sn_1 == sn_2:
+                    found = True
+            if found:
+                timeseries[sn_1][date.timestamp()] = True
+            else:
+                timeseries[sn_1][date.timestamp()] = False
+
+        # for sleepnote in night.sleep_notes:
+        #     if sleepnote in config.SLEEPNOTES_TO_SKIP:
+        #         continue
+        #     sleepnote = translate_sleepnote(sleepnote)
+        #     timeseries[sleepnote][date.timestamp()] = True
 
     for sleepnote in tqdm(sleepnotes):
         sleepnote = translate_sleepnote(sleepnote)
         utils.file_io.save_sleepnote_timeseries_to_file(
-            timeseries, sleepnote
+            timeseries[sleepnote], sleepnote
         )
 
     translations = list(set([translate_sleepnote(sn) for sn in sleepnotes]))
