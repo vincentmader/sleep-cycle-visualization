@@ -5,6 +5,7 @@ YELLOW='\033[1;33m'
 path_to_remove=( 
     "../data/out/nights"
     "../data/out/time_series/sleep_notes"
+    "../data/out/sleep_notes"
     "../figures/sleep_notes" 
 )
 echo

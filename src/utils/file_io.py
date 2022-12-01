@@ -2,8 +2,6 @@ import json
 import os
 import pickle
 
-from tqdm import tqdm
-
 import config
 from config import PATH_TO_DATA
 
@@ -28,12 +26,14 @@ def save_to_pickle(data, path_to_savefile):
 # ═════════════════════════════════════════════════════════════════════════════
 
 def save_nights_to_file(data):
-    path_to_savefile = os.path.join(config.PATH_TO_DATA, "out", "nights", "nights.p")
+    path_to_savefile = os.path.join(
+        config.PATH_TO_DATA, "out", "nights", "nights.p")
     save_to_pickle(data, path_to_savefile)
 
 
 def load_nights_from_file():
-    path_to_savefile = os.path.join(config.PATH_TO_DATA, "out", "nights", "nights.p")
+    path_to_savefile = os.path.join(
+        config.PATH_TO_DATA, "out", "nights", "nights.p")
     return load_from_pickle(path_to_savefile)
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -60,7 +60,7 @@ def load_sleepnote_timeseries_from_file(sn_name):
 
 def save_sleepnote_names_to_file(data):
     path_to_savefile = os.path.join(
-        PATH_TO_DATA, "out", f"names.json"
+        PATH_TO_DATA, "out", "sleep_notes", f"names.json"
     )
     with open(path_to_savefile, 'w') as fp:
         json.dump(data, fp)
@@ -68,7 +68,7 @@ def save_sleepnote_names_to_file(data):
 
 def load_sleepnote_names_from_file():
     path_to_savefile = os.path.join(
-        PATH_TO_DATA, "out", f"names.json"
+        PATH_TO_DATA, "out", "sleep_notes", f"names.json"
     )
     with open(path_to_savefile, 'r') as fp:
         data = json.load(fp)
@@ -79,7 +79,7 @@ def load_sleepnote_names_from_file():
 
 def save_translated_sleepnote_names_to_file(data):
     path_to_savefile = os.path.join(
-        PATH_TO_DATA, "out", f"translated_names.json"
+        PATH_TO_DATA, "out", "sleep_notes", f"translated_names.json"
     )
     with open(path_to_savefile, 'w') as fp:
         json.dump(data, fp)
@@ -87,8 +87,28 @@ def save_translated_sleepnote_names_to_file(data):
 
 def load_translated_sleepnote_names_from_file():
     path_to_savefile = os.path.join(
-        PATH_TO_DATA, "out", f"translated_names.json"
+        PATH_TO_DATA, "out", "sleep_notes", f"translated_names.json"
     )
     with open(path_to_savefile, 'r') as fp:
         data = json.load(fp)
+    return data
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+
+
+def save_sleepcycle_usage_to_file(data):
+    path_to_savefile = os.path.join(
+        PATH_TO_DATA, "out", "sleep_cycle", f"usage.p"
+    )
+    with open(path_to_savefile, 'wb') as fp:
+        pickle.dump(data, fp)
+
+
+def load_sleepcycle_usage_from_file():
+    path_to_savefile = os.path.join(
+        PATH_TO_DATA, "out", "sleep_cycle", f"usage.p"
+    )
+    with open(path_to_savefile, 'rb') as fp:
+        data = pickle.load(fp)
     return data

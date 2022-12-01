@@ -1,67 +1,58 @@
-from datetime import datetime as dt
-from datetime import timedelta as td
-import os
-import pickle
 from tqdm import tqdm
 
-import config
-from config import PATH_TO_DATA
-from config import START_DATE
 import utils
 from utils.cprint import cprint
-from data_preparation.sleep_notes.translation import translate_sleepnote
-from data_preparation.sleep_notes.names import get_sleepnote_names
+from utils.dates import prepare_empty_timeseries
+from utils.file_io import load_translated_sleepnote_names_from_file
+from data_preparation.sleep_notes.names import translate_sleepnote
 
 
-def prepare_empty_timeseries(sleepnotes):
-    nr_of_days = (dt.now() - START_DATE).days
-    days = [START_DATE + td(days=i) for i in range(nr_of_days)]
+def construct_sleepnote_timeseries_objects():
+    """Create time-series object for all sleep-notes.
+
+    Returns:
+        dict(str: dict(int: bool))
+
+        Format: {
+            sleepnote_name: {
+                unix_timestamp: True/False/None,
+                ...
+            },
+            ...
+        }
+    """
+    cprint("\n Constructing sleep-note time-series objects...")
+
+    # Load list of all nights as `night.Night` object instances.
+    nights = utils.file_io.load_nights_from_file()
+    # Load list of all sleep-note names.
+    sleepnotes = utils.file_io.load_sleepnote_names_from_file()
+    # Prepare empty time-series.
     timeseries = {}
     for sn in sleepnotes:
         sn = translate_sleepnote(sn)
         if sn not in timeseries.keys():
-            timeseries[sn] = {d.timestamp(): None for d in days}
-    return timeseries
+            timeseries[sn] = prepare_empty_timeseries()
 
-
-def construct_sleepnote_timeseries_objects():
-    nights = utils.file_io.load_nights_from_file()
-
-    cprint("\n Constructing sleep-note time-series objects...")
-
-    sleepnotes = utils.file_io.load_sleepnote_names_from_file()
-    timeseries = prepare_empty_timeseries(sleepnotes)
-
+    # Loop over all nights, check whether each sleep-note was active.
     for night in nights:
         date = night.date
         for sn_1 in sleepnotes:
-            if sn_1 in config.SLEEPNOTES_TO_SKIP:
-                continue
             sn_1 = translate_sleepnote(sn_1)
             found = False
             for sn_2 in night.sleep_notes:
                 sn_2 = translate_sleepnote(sn_2)
                 if sn_1 == sn_2:
                     found = True
-            if found:
-                timeseries[sn_1][date.timestamp()] = True
-            else:
-                timeseries[sn_1][date.timestamp()] = False
+            timeseries[sn_1][date.timestamp()] = found
 
-        # for sleepnote in night.sleep_notes:
-        #     if sleepnote in config.SLEEPNOTES_TO_SKIP:
-        #         continue
-        #     sleepnote = translate_sleepnote(sleepnote)
-        #     timeseries[sleepnote][date.timestamp()] = True
-
-    for sleepnote in tqdm(sleepnotes):
-        sleepnote = translate_sleepnote(sleepnote)
+    # Save time-series for each sleep-note to file.
+    translations = load_translated_sleepnote_names_from_file()
+    for sleepnote in tqdm(translations):
         utils.file_io.save_sleepnote_timeseries_to_file(
             timeseries[sleepnote], sleepnote
         )
 
-    translations = list(set([translate_sleepnote(sn) for sn in sleepnotes]))
-    cprint(
-        f" SUCCESS: Constructed time-series object for {len(sleepnotes)} -> {len(translations)} sleep-notes.", "green")
-
+    msg = f" SUCCESS: Constructed time-series object for {len(sleepnotes)} -> {len(translations)} sleep-notes."
+    cprint(msg, "green")
     return timeseries
