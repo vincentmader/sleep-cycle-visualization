@@ -19,11 +19,10 @@ def plot_sleep_cycle_usage():
 
     timeseries = load_sleepcycle_usage_from_file()
 
-    timestamps = sorted(timeseries.keys())
-    sc_usage_bools = [timeseries[d] for d in timestamps]
+    dates = sorted(timeseries.keys())
+    sc_usage_bools = [timeseries[d] for d in dates]
     sc_usage_ints = [{True: 1, False: 0}[b] for b in sc_usage_bools]
     y = moving_avg(sc_usage_ints, N)
-    dates = [dt.fromtimestamp(ts) for ts in timestamps]
 
     plt.style.use(MPL_THEME)
 

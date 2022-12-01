@@ -9,11 +9,11 @@ def construct_sleepnote_timeseries():
     """Create time-series for all sleep-notes.
 
     Returns:
-        dict(str: dict(int: bool))
+        dict(str: dict(datetime.datetime: bool))
 
         Format: {
             sleepnote_name: {
-                unix_timestamp: True/False/None,
+                datetime: True/False/None,
                 ...
             },
             ...
@@ -42,7 +42,7 @@ def construct_sleepnote_timeseries():
                 sn_2 = translate_sleepnote(sn_2)
                 if sn_1 == sn_2:
                     found = True
-            timeseries[sn_1][date.timestamp()] = found
+            timeseries[sn_1][date] = found
 
     # Save time-series for each sleep-note to file.
     translations = load_translated_sleepnote_names_from_file()
@@ -51,6 +51,6 @@ def construct_sleepnote_timeseries():
             timeseries[sleepnote], sleepnote
         )
 
-    msg = f"   SUCCESS: Constructed time-series object for {len(sleepnotes)} -> {len(translations)} sleep-notes."
+    msg = f"   Constructed time-series object for {len(sleepnotes)} -> {len(translations)} sleep-notes."
     cprint(msg, "green")
     return timeseries

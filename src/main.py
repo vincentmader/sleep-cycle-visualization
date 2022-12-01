@@ -24,9 +24,7 @@ def prepare():
     data_preparation.sleep_notes.names.get_sleepnote_names()
     data_preparation.sleep_notes.names.get_translated_sleepnote_names()
     data_preparation.sleep_notes.time_series.construct_sleepnote_timeseries()
-    data_preparation.sleep_history.sleep_quality.get_sleep_quality_over_time()
-    data_preparation.sleep_history.bedtimes.get_bedtimes_over_time()
-    data_preparation.sleep_history.wakeup_mood.get_wakeup_mood_over_time()
+    data_preparation.sleep_history.timeseries.get_sleep_history_timeseries()
 
 
 def process():
@@ -35,8 +33,8 @@ def process():
 
 def visualize():
     print()
-    data_visualization.sleep_cycle.usage.plot_sleep_cycle_usage()
     data_visualization.sleep_history.sleep_snake.plot_sleep_snake()
+    data_visualization.sleep_cycle.usage.plot_sleep_cycle_usage()
     data_visualization.sleep_notes.moving_average.plot_moving_average()
 
 

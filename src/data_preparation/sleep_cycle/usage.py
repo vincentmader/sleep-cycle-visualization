@@ -13,7 +13,7 @@ def get_usage():
     nights = load_nights_from_file()
     for night in nights:
         date = night.date
-        timeseries[date.timestamp()] = True
+        timeseries[date] = True
 
     save_sleepcycle_usage_to_file(timeseries)
     return timeseries

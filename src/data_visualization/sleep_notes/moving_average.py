@@ -24,9 +24,8 @@ def plot_moving_average():
     fig = plt.figure(figsize=(10, 5))
 
     sc_usage_timeseries = load_sleepcycle_usage_from_file()
-    timestamps = sorted(sc_usage_timeseries.keys())
-    dates = [dt.fromtimestamp(i) for i in timestamps]
-    sc_usage_bools = [sc_usage_timeseries[i] for i in timestamps]
+    dates = sorted(sc_usage_timeseries.keys())
+    sc_usage_bools = [sc_usage_timeseries[i] for i in dates]
     sc_usage_ints = [
         {True: 1, False: 0, None: 0}[b] for b in sc_usage_bools
     ]
@@ -36,7 +35,7 @@ def plot_moving_average():
     for sleepnote in tqdm(sorted(sleepnote_names)):
         sn_usage_timeseries = load_sleepnote_timeseries_from_file(sleepnote)
 
-        sn_usage_bools = [sn_usage_timeseries[i] for i in timestamps]
+        sn_usage_bools = [sn_usage_timeseries[i] for i in dates]
         sn_usage_ints = [
             {True: 1, False: 0, None: 0}[b] for b in sn_usage_bools
         ]
@@ -46,7 +45,7 @@ def plot_moving_average():
         plt.title(f"{sleepnote} - moving average over the last {N} days")
         plt.plot(dates, sn_usage_mavg, color="orange")
         # plt.bar(dates, y,  color="orange", width=td(days=1))
-        plt.xlim(dates[0], dates[-1])
+        # plt.xlim(dates[0], dates[-1])
         plt.ylim(0, 1)
         plt.tight_layout()
 

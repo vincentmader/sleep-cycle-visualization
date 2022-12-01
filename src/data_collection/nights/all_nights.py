@@ -27,5 +27,5 @@ def get_all_nights():
 
     year_min, year_max = nights[0].date.year, nights[-1].date.year
     cprint(
-        f"   SUCCESS: Loaded {len(nights)} nights from {year_min} to {year_max} into memory.", "green")
+        f"   Loaded {len(nights)} nights from {year_min} to {year_max} into memory.", "green")
     return nights
