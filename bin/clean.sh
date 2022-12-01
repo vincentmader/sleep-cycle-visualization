@@ -10,6 +10,6 @@ path_to_remove=(
 echo
 for path in "${path_to_remove[@]}"; do
     msg=" WARNING: Removing \"$path\""
-    ./utils/cprint.sh "$msg" $YELLOW
+    cd ./utils/cprint/bin && ./cprint "$msg" $YELLOW && cd ../../..
     rm -f "$path"/*
 done

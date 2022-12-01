@@ -3,3 +3,4 @@
 /figures/
 /venv/
 __pycache__/
+/bin/utils/cprint

@@ -6,6 +6,9 @@
 #   Install python requirements.
     ../venv/bin/pip3 install -r ../requirements.txt
 
+#   Install colored-echo utility function.
+    git clone https://github.com/vincentmader/colored-echo.sh ./utils/cprint
+
 #   Create directory hierarchy.
     cd "../data/nights/"
     cd "../data/time_series/"

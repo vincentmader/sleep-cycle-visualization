@@ -8,4 +8,4 @@ msg="$msg ╚══════════════════════�
 color="blue"
 
 clear
-./cprint.sh "$msg" "$color"
+cd ./cprint/bin && ./cprint "$msg" "$color"
