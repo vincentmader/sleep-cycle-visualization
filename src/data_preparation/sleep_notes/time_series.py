@@ -7,8 +7,8 @@ from utils.file_io import load_translated_sleepnote_names_from_file
 from data_preparation.sleep_notes.names import translate_sleepnote
 
 
-def construct_sleepnote_timeseries_objects():
-    """Create time-series object for all sleep-notes.
+def construct_sleepnote_timeseries():
+    """Create time-series for all sleep-notes.
 
     Returns:
         dict(str: dict(int: bool))

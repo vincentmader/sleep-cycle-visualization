@@ -17,38 +17,6 @@ from utils.timeseries import moving_avg
 N = 50
 
 
-def nr_of_logged_nights(timeseries):
-    y = []
-    for i, _ in enumerate(timeseries):
-        y_i = 0
-        for j in range(min(i+1, N)):
-            boolean = timeseries[i - j]
-            if boolean in [True, False]:
-                y_i += 1
-        y.append(y_i)
-    return y
-
-
-# def moving_avg(arr):
-    # y = []
-    # for i, _ in enumerate(arr):
-    #     nr_of_logged_notes = None
-    #     nr_of_logged_nights = 0
-    #     for j in range(min(i, N)):
-    #         boolean = arr[i - j]
-    #         if boolean in (True, False):
-    #             nr_of_logged_nights += 1
-    #             if nr_of_logged_notes == None:
-    #                 nr_of_logged_notes = 0
-    #             if boolean == True:
-    #                 nr_of_logged_notes += 1
-
-    #     if nr_of_logged_notes:
-    #         nr_of_logged_notes /= nr_of_logged_nights
-    #     y.append(nr_of_logged_notes)
-    # return y
-
-
 def plot_moving_average():
     cprint("\n Plotting sleep-note moving-averages...")
 
@@ -85,7 +53,6 @@ def plot_moving_average():
         ax = plt.gca()
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
-
         # ax.spines['left'].set_visible(False)
         # ax.get_yaxis().set_ticks([])
 
