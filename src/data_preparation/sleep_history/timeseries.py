@@ -1,13 +1,11 @@
 from datetime import timedelta as td
 import os
 
-import numpy as np
-
 from config import PATH_TO_DATA
 from utils.cprint import cprint
 from utils.file_io import load_from_pickle
 from utils.file_io import save_to_pickle
-from utils.dates import prepare_empty_timeseries
+from utils.timeseries import initialize_timeseries
 
 def get_sleep_history_timeseries():
     cprint(" Loading bed-times...")
@@ -15,28 +13,28 @@ def get_sleep_history_timeseries():
     path_to_savefile = os.path.join(PATH_TO_DATA, "out", "nights", "nights.p")
     nights = load_from_pickle(path_to_savefile)
 
-    list_measurement_start = prepare_empty_timeseries()
-    list_measurement_end = prepare_empty_timeseries()
-    list_time_asleep_in_s = prepare_empty_timeseries()
-    list_time_before_sleep_in_s = prepare_empty_timeseries()
-    list_sleep_start = prepare_empty_timeseries()
-    list_sleep_end = prepare_empty_timeseries()
-    list_measurement_duration = prepare_empty_timeseries()
-    list_sleep_quality = prepare_empty_timeseries()
-    list_wakeup_mood = prepare_empty_timeseries()
-    list_heart_rate = prepare_empty_timeseries()
-    list_nr_of_steps = prepare_empty_timeseries()
-    list_sleep_regularity = prepare_empty_timeseries()
-    list_alarm_mode = prepare_empty_timeseries()
-    list_air_pressure_in_pa = prepare_empty_timeseries()
-    list_city_name = prepare_empty_timeseries()
-    list_nr_of_moves_per_hour = prepare_empty_timeseries()
+    list_measurement_start = initialize_timeseries()
+    list_measurement_end = initialize_timeseries()
+    list_time_asleep_in_s = initialize_timeseries()
+    list_time_before_sleep_in_s = initialize_timeseries()
+    list_sleep_start = initialize_timeseries()
+    list_sleep_end = initialize_timeseries()
+    list_measurement_duration = initialize_timeseries()
+    list_sleep_quality = initialize_timeseries()
+    list_wakeup_mood = initialize_timeseries()
+    list_heart_rate = initialize_timeseries()
+    list_nr_of_steps = initialize_timeseries()
+    list_sleep_regularity = initialize_timeseries()
+    list_alarm_mode = initialize_timeseries()
+    list_air_pressure_in_pa = initialize_timeseries()
+    list_city_name = initialize_timeseries()
+    list_nr_of_moves_per_hour = initialize_timeseries()
     # window_start
     # window_end
-    list_did_snore = prepare_empty_timeseries()
-    list_snore_time = prepare_empty_timeseries()
-    list_weather_temp_in_c = prepare_empty_timeseries()
-    list_weather_type = prepare_empty_timeseries()
+    list_did_snore = initialize_timeseries()
+    list_snore_time = initialize_timeseries()
+    list_weather_temp_in_c = initialize_timeseries()
+    list_weather_type = initialize_timeseries()
 
     for night in nights:
         date = night.date

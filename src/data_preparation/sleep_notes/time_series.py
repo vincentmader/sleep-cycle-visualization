@@ -1,6 +1,6 @@
 import utils
 from utils.cprint import cprint
-from utils.dates import prepare_empty_timeseries
+from utils.timeseries import initialize_timeseries
 from utils.file_io import load_translated_sleepnote_names_from_file
 from data_preparation.sleep_notes.names import translate_sleepnote
 
@@ -30,7 +30,7 @@ def construct_sleepnote_timeseries():
     for sn in sleepnotes:
         sn = translate_sleepnote(sn)
         if sn not in timeseries.keys():
-            timeseries[sn] = prepare_empty_timeseries()
+            timeseries[sn] = initialize_timeseries()
 
     # Loop over all nights, check whether each sleep-note was active.
     for night in nights:

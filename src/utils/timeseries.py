@@ -1,5 +1,9 @@
 import numpy as np
 
+from utils.dates import get_all_dates
+
+def initialize_timeseries(initial_value=None):
+    return {date: initial_value for date in get_all_dates()}
 
 def moving_sum(arr, N):
     y = []
