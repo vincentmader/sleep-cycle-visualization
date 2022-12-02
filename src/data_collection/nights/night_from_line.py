@@ -4,6 +4,7 @@ from .night_from_line_format_v2 import get_night_from_line_format_v2
 
 def get_night_from_line(line, export_type):
     split = line.split(';')
+
     if export_type == "v1":
         night = get_night_from_line_format_v1(split)
     elif export_type == "v2":

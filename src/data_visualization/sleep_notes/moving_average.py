@@ -1,5 +1,3 @@
-from datetime import datetime as dt
-from datetime import timedelta as td
 import os
 
 import matplotlib.pyplot as plt
@@ -21,7 +19,7 @@ N = 50
 
 def plot_moving_average():
     cprint(" Plotting sleep-note moving-averages...")
-    
+
     # Setup plot.
     plt.style.use(MPL_THEME)
     fig = plt.figure(figsize=(10, 5))
@@ -31,8 +29,9 @@ def plot_moving_average():
 
     # Load timeseries data for sleep-cycle usage.
     sc_usage_timeseries = load_sleepcycle_usage_from_file()
-    dates = sorted(sc_usage_timeseries.keys())
-    sc_usage_bools = [sc_usage_timeseries[i] for i in dates]
+    dates = sc_usage_timeseries.dates
+    sc_usage_bools = sc_usage_timeseries.values
+    # Convert boolean usage time-series to integers.
     sc_usage_ints = [
         {True: 1, False: 0, None: 0}[b] for b in sc_usage_bools
     ]
@@ -45,13 +44,14 @@ def plot_moving_average():
         # Load timeseries data for sleep-note usage.
         sn_usage_timeseries = load_sleepnote_timeseries_from_file(sleepnote)
         sn_usage_bools = [sn_usage_timeseries[i] for i in dates]
+        # Convert boolean usage time-series to integers.
         sn_usage_ints = [
             {True: 1, False: 0, None: 0}[b] for b in sn_usage_bools
         ]
         # Calculate moving-average for sleep-note usage.
         sn_usage_mavg = moving_sum(sn_usage_ints, N)
         sn_usage_mavg = np.array([
-            sn_usage_mavg[i] / sc_usage_mavg[i] 
+            sn_usage_mavg[i] / sc_usage_mavg[i]
             if sc_usage_mavg[i] > 0 else None
             for i in range(len(dates))
         ])

@@ -1,8 +1,11 @@
-import utils
+from data_preparation.sleep_notes.names import translate_sleepnote
 from utils.cprint import cprint
 from utils.timeseries import initialize_timeseries
 from utils.file_io import load_translated_sleepnote_names_from_file
-from data_preparation.sleep_notes.names import translate_sleepnote
+from utils.file_io import load_nights_from_file
+from utils.file_io import save_sleepnote_timeseries_to_file
+from utils.file_io import load_sleepnote_names_from_file
+from utils.dates import get_all_dates
 
 
 def construct_sleepnote_timeseries():
@@ -21,10 +24,13 @@ def construct_sleepnote_timeseries():
     """
     cprint(" Constructing sleep-note time-series objects...")
 
+    dates = get_all_dates()
+
     # Load list of all nights as `night.Night` object instances.
-    nights = utils.file_io.load_nights_from_file()
+    nights = load_nights_from_file()
     # Load list of all sleep-note names.
-    sleepnotes = utils.file_io.load_sleepnote_names_from_file()
+    sleepnotes = load_sleepnote_names_from_file()
+
     # Prepare empty time-series.
     timeseries = {}
     for sn in sleepnotes:
@@ -47,7 +53,7 @@ def construct_sleepnote_timeseries():
     # Save time-series for each sleep-note to file.
     translations = load_translated_sleepnote_names_from_file()
     for sleepnote in translations:
-        utils.file_io.save_sleepnote_timeseries_to_file(
+        save_sleepnote_timeseries_to_file(
             timeseries[sleepnote], sleepnote
         )
 

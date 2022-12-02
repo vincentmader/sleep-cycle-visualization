@@ -11,92 +11,119 @@ from utils.cprint import cprint
 from utils.file_io import load_from_pickle
 from utils.dates import get_all_dates
 from utils.timeseries import moving_avg
+from utils.timeseries import TimeSeries
 
+# Define path to save-file directory for sleep-history datasets.
+PATH_TO_SAVEFILES = os.path.join(PATH_TO_DATA, "out", "sleep_history")
+# Define moving-average window-size.
 N = 50
 
 
-def foo(
-    x, 
-    list_measurement_start, 
-    list_measurement_end,
-    list_measurement_duration_in_s
+def reformat_timeseries_data(
+    all_dates,
+    timeseries_for_measurement_start,
+    timeseries_for_measurement_end,
+    timeseries_for_measurement_duration_in_h
 ):
-    times = np.array([])
-    measurement_starts_in_s = np.array([])
-    measurement_ends_in_s = np.array([])
-    measurement_durations_in_s = np.array([])
-    for d in x:
-        start = list_measurement_start[d]
-        end = list_measurement_end[d]
-        duration = list_measurement_duration_in_s[d]
-        if start == None or duration == None:
-            start, end, duration = 0, 0, 0
-        else:
-            start = start.hour * 3600\
-                  + start.minute * 60\
-                  + start.second
-            end = end.hour * 3600\
-                + end.minute * 60\
-                + end.second
-            if start > 18 * 3600:
-                start -= 24 * 3600
-            if end > 18 * 3600:
-                end -= 24 * 3600
-        times = np.append(times, d)
-        measurement_starts_in_s = np.append(measurement_starts_in_s, start)
-        measurement_ends_in_s = np.append(measurement_ends_in_s, start)
-        measurement_durations_in_s = np.append(measurement_durations_in_s, duration)
-    return times, measurement_starts_in_s, measurement_ends_in_s, measurement_durations_in_s
+    # Initialize return values.
+    dates = np.array([])
+    starts_in_h = np.array([])
+    ends_in_h = np.array([])
+    durations_in_h = np.array([])
+
+    for date in all_dates:
+        start = timeseries_for_measurement_start[date]
+        end = timeseries_for_measurement_end[date]
+        duration = timeseries_for_measurement_duration_in_h[date]
+
+        if start == None or duration == None or end == None:
+            continue
+
+        start = start.hour\
+            + start.minute / 60\
+            + start.second / 3600
+        duration = duration / 3600
+        end = end.hour\
+            + end.minute / 60\
+            + end.second / 3600
+
+        if start > 15:
+            start -= 24
+        # if end > 18:
+        #     end -= 24
+
+        dates = np.append(dates, date)
+        starts_in_h = np.append(starts_in_h, start)
+        ends_in_h = np.append(ends_in_h, end)
+        durations_in_h = np.append(durations_in_h, duration)
+
+    return dates, starts_in_h, ends_in_h, durations_in_h
 
 
 def plot_sleep_snake():
     cprint(" Plotting sleep-snake...")
 
-    x = get_all_dates()
+    all_dates = get_all_dates()
 
-    path_to_savefiles = os.path.join(PATH_TO_DATA, "out", "sleep_history")
+    # Load timeseries data for measurement-start.
+    filename = "measurement_start.p"
+    path_to_savefile = os.path.join(PATH_TO_SAVEFILES, filename)
+    timeseries_for_measurement_start = load_from_pickle(path_to_savefile)
+    # Load timeseries data for measurement-end.
+    filename = "measurement_end.p"
+    path_to_savefile = os.path.join(PATH_TO_SAVEFILES, filename)
+    timeseries_for_measurement_end = load_from_pickle(path_to_savefile)
+    # Load timeseries data for measurement-duration (in seconds).
+    filename = "measurement_duration_in_s.p"
+    path_to_savefile = os.path.join(PATH_TO_SAVEFILES, filename)
+    timeseries_for_measurement_duration = load_from_pickle(path_to_savefile)
 
-    path_to_savefile = os.path.join(path_to_savefiles, "measurement_start.p")
-    list_measurement_start = load_from_pickle(path_to_savefile)
-    path_to_savefile = os.path.join(path_to_savefiles, "measurement_end.p")
-    list_measurement_end = load_from_pickle(path_to_savefile)
-    path_to_savefile = os.path.join(path_to_savefiles, "measurement_duration_in_s.p")
-    list_measurement_duration_in_s = load_from_pickle(path_to_savefile)
-
-    dates, measurement_starts_in_s, measurement_ends_in_s, measurement_durations_in_s = foo(
-        x, list_measurement_start, list_measurement_end, list_measurement_duration_in_s
+    res = reformat_timeseries_data(
+        all_dates,
+        timeseries_for_measurement_start,
+        timeseries_for_measurement_end,
+        timeseries_for_measurement_duration
     )
+    dates = res[0]
+    measurement_starts_in_h = res[1]
+    measurement_ends_in_h = res[2]
+    measurement_durations_in_h = res[3]
 
+    # Create figure.
     plt.style.use(MPL_THEME)
     plt.figure(figsize=(16, 6))
 
     plt.bar(
         dates,
-        measurement_durations_in_s/3600, 
-        bottom=measurement_starts_in_s/3600, 
+        measurement_durations_in_h,
+        bottom=measurement_starts_in_h,
         width=td(days=1),
         color="gray"
     )
-    # plt.plot(x, moving_avg(measurement_starts_in_s, N))
-    # plt.plot(x, moving_avg(measurement_ends_in_s, N))
+    measurement_starts_in_h = TimeSeries(dates, measurement_starts_in_h)
+    measurement_starts_in_h = measurement_starts_in_h.moving_average(N)
+    measurement_ends_in_h = TimeSeries(dates, measurement_ends_in_h)
+    measurement_ends_in_h = measurement_ends_in_h.moving_average(N)
 
-    plt.xlim(x[0], x[-1])
-    plt.ylim(-3, 18) # ?
+    plt.plot(dates, measurement_starts_in_h.values, "green")
+    plt.plot(dates, measurement_ends_in_h.values, "red")
 
-    plt.yticks(
-        [-3, 0, 3, 6, 9, 12, 15],
-        ["21:00", "00:00", "03:00", "06:00", "09:00", "12:00", "15:00"]
-    )
-
-    plt.tight_layout()
+    # Configure plot.
     ax = plt.gca()
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
     ax.spines['left'].set_visible(False)
-
+    plt.xlim(dates[0], dates[-1])
+    plt.ylim(-3, 18)  # ?
+    plt.yticks(
+        [-3, 0, 3, 6, 9, 12, 15],
+        ["21:00", "00:00", "03:00", "06:00", "09:00", "12:00", "15:00"]
+    )
+    plt.tight_layout()
     plt.grid(True, color="#222222")
 
+    # Save to file.
     path_to_savefile = os.path.join(
         PATH_TO_FIGURES, "sleep_history", "sleep_snake.png"
     )
