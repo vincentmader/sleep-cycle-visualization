@@ -13,7 +13,7 @@ from utils.timeseries import TimeSeries
 
 
 # Define moving-average window-size.
-N = 50
+N = 30
 # Define path to figures directory.
 PATH_TO_FIGURES = os.path.join(PATH_TO_FIGURES, "sleep_notes")
 
