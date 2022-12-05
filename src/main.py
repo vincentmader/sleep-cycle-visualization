@@ -6,11 +6,10 @@ import data_visualization
 
 # DONE 1. save complete sleep history to file
 # DONE 2. load complete sleep history from file
-# TODO 3. visualize sleep history
-# TODO 3.a) plot sleep-snake
-# TODO 3.b) plot "frequency" of sleep notes
+# DONE 3. visualize sleep history
+# DONE 3.a) plot sleep-snake
+# DONE 3.b) plot "frequency" of sleep notes
 # TODO 3.b) plot histograms of bed-time, wake-up-time, time-in-bed, ...
-# TODO 3...
 
 
 def collect():

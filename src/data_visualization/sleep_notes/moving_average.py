@@ -43,7 +43,7 @@ def plot_moving_average():
     for sleepnote in tqdm(sorted(sleepnote_names)):
         # Load timeseries data for sleep-note usage.
         sn_usage_timeseries = load_sleepnote_timeseries_from_file(sleepnote)
-        sn_usage_bools = [sn_usage_timeseries[i] for i in dates]
+        sn_usage_bools = sn_usage_timeseries.values
         # Convert boolean usage time-series to integers.
         sn_usage_ints = [
             {True: 1, False: 0, None: 0}[b] for b in sn_usage_bools

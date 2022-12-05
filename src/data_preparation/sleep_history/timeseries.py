@@ -1,11 +1,14 @@
 from datetime import timedelta as td
 import os
 
+import numpy as np
+
 from config import PATH_TO_DATA
 from utils.cprint import cprint
 from utils.file_io import load_from_pickle
 from utils.file_io import save_to_pickle
-from utils.timeseries import initialize_timeseries
+from utils.timeseries import initialize_timeseries_dict
+from utils.timeseries import TimeSeries
 
 
 def get_sleep_history_timeseries():
@@ -16,28 +19,28 @@ def get_sleep_history_timeseries():
     nights = load_from_pickle(path_to_savefile)
 
     # Initialize timeseries dictionaries.
-    timeseries_for_measurement_start = initialize_timeseries()
-    timeseries_for_measurement_end = initialize_timeseries()
-    timeseries_for_time_asleep_in_s = initialize_timeseries()
-    timeseries_for_time_before_sleep_in_s = initialize_timeseries()
-    timeseries_for_sleep_start = initialize_timeseries()
-    timeseries_for_sleep_end = initialize_timeseries()
-    timeseries_for_measurement_duration = initialize_timeseries()
-    timeseries_for_sleep_quality = initialize_timeseries()
-    timeseries_for_wakeup_mood = initialize_timeseries()
-    timeseries_for_heart_rate = initialize_timeseries()
-    timeseries_for_nr_of_steps = initialize_timeseries()
-    timeseries_for_sleep_regularity = initialize_timeseries()
-    timeseries_for_alarm_mode = initialize_timeseries()
-    timeseries_for_air_pressure_in_pa = initialize_timeseries()
-    timeseries_for_city_name = initialize_timeseries()
-    timeseries_for_nr_of_moves_per_hour = initialize_timeseries()
+    timeseries_for_measurement_start = initialize_timeseries_dict()
+    timeseries_for_measurement_end = initialize_timeseries_dict()
+    timeseries_for_time_asleep_in_s = initialize_timeseries_dict()
+    timeseries_for_time_before_sleep_in_s = initialize_timeseries_dict()
+    timeseries_for_sleep_start = initialize_timeseries_dict()
+    timeseries_for_sleep_end = initialize_timeseries_dict()
+    timeseries_for_measurement_duration = initialize_timeseries_dict()
+    timeseries_for_sleep_quality = initialize_timeseries_dict()
+    timeseries_for_wakeup_mood = initialize_timeseries_dict()
+    timeseries_for_heart_rate = initialize_timeseries_dict()
+    timeseries_for_nr_of_steps = initialize_timeseries_dict()
+    timeseries_for_sleep_regularity = initialize_timeseries_dict()
+    timeseries_for_alarm_mode = initialize_timeseries_dict()
+    timeseries_for_air_pressure_in_pa = initialize_timeseries_dict()
+    timeseries_for_city_name = initialize_timeseries_dict()
+    timeseries_for_nr_of_moves_per_hour = initialize_timeseries_dict()
     # window_start
     # window_end
-    timeseries_for_did_snore = initialize_timeseries()
-    timeseries_for_snore_time = initialize_timeseries()
-    timeseries_for_weather_temp_in_c = initialize_timeseries()
-    timeseries_for_weather_type = initialize_timeseries()
+    timeseries_for_did_snore = initialize_timeseries_dict()
+    timeseries_for_snore_time = initialize_timeseries_dict()
+    timeseries_for_weather_temp_in_c = initialize_timeseries_dict()
+    timeseries_for_weather_type = initialize_timeseries_dict()
 
     # Load data into timeseries dictionaries.
     for night in nights:
@@ -108,6 +111,9 @@ def get_sleep_history_timeseries():
     # Save to file.
     path_to_savefiles = os.path.join(PATH_TO_DATA, "out", "sleep_history")
     for filename, dataset in filenames_and_datasets:
+        dates = np.array(sorted([d for d in dataset.keys()]))
+        values = np.array([dataset[d] for d in dates])
+        dataset = TimeSeries(dates, values)
         path_to_savefile = os.path.join(path_to_savefiles, f"{filename}.p")
         save_to_pickle(dataset, path_to_savefile)
 

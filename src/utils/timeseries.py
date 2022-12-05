@@ -4,16 +4,11 @@ from utils.dates import get_all_dates
 
 
 class TimeSeries:
-    # def __init__(self, dates=None, values=None):
-    def __init__(self, dates, values):
-        # if dates == None:
-        #     dates = get_all_dates()
-        # if values == None:
-        #     values = np.array([None for _ in dates])
-        # elif values == False:
-        #     values = np.array([None for _ in dates])
-        # if dates.shape == values.shape:
-        #     raise Exception("shape mismatch in TimeSeries definition")
+    def __init__(
+        self,
+        dates: np.ndarray,
+        values: np.ndarray
+    ):
         self.dates = dates
         self.values = values
 
@@ -30,7 +25,7 @@ class TimeSeries:
         return TimeSeries(self.dates, self.values / rhs)
 
     def moving_average(self, N):
-        mavg = []
+        mavg = np.array([])
         for i, _ in enumerate(self.dates):
             M = 0
             S = 0
@@ -39,11 +34,18 @@ class TimeSeries:
                 if value != None:
                     M += 1
                     S += value
-            mavg.append(S / M)
+            mavg = np.append(mavg, S / M)
         return TimeSeries(self.dates, mavg)
 
 
 def initialize_timeseries(initial_value=None):
+    # return {date: initial_value for date in get_all_dates()}
+    dates = get_all_dates()
+    values = np.array([initial_value for d in dates])
+    return TimeSeries(dates, values)
+
+
+def initialize_timeseries_dict(initial_value=None):
     return {date: initial_value for date in get_all_dates()}
 
 

@@ -31,11 +31,11 @@ def reformat_timeseries_data(
     ends_in_h = np.array([])
     durations_in_h = np.array([])
 
-    for date in all_dates:
-        start = timeseries_for_measurement_start[date]
-        end = timeseries_for_measurement_end[date]
-        duration = timeseries_for_measurement_duration_in_h[date]
+    starts = timeseries_for_measurement_start.values
+    ends = timeseries_for_measurement_end.values
+    durations = timeseries_for_measurement_duration_in_h.values
 
+    for date, start, end, duration in zip(all_dates, starts, ends, durations):
         if start == None or duration == None or end == None:
             continue
 
