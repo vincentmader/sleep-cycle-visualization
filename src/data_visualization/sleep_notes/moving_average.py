@@ -9,12 +9,13 @@ from config import PATH_TO_FIGURES
 from utils.cprint import cprint
 from utils.file_io import load_sleepnote_timeseries_from_file
 from utils.file_io import load_translated_sleepnote_names_from_file
-from utils.file_io import load_sleepcycle_usage_from_file
-from utils.timeseries import moving_sum
+from utils.timeseries import TimeSeries
 
 
 # Define moving-average window-size.
 N = 50
+# Define path to figures directory.
+PATH_TO_FIGURES = os.path.join(PATH_TO_FIGURES, "sleep_notes")
 
 
 def plot_moving_average():
@@ -24,40 +25,22 @@ def plot_moving_average():
     plt.style.use(MPL_THEME)
     fig = plt.figure(figsize=(10, 5))
 
-    # Define path to figures directory.
-    path_to_figures = os.path.join(PATH_TO_FIGURES, "sleep_notes")
-
-    # Load timeseries data for sleep-cycle usage.
-    sc_usage_timeseries = load_sleepcycle_usage_from_file()
-    dates = sc_usage_timeseries.dates
-    sc_usage_bools = sc_usage_timeseries.values
-    # Convert boolean usage time-series to integers.
-    sc_usage_ints = [
-        {True: 1, False: 0, None: 0}[b] for b in sc_usage_bools
-    ]
-    # Calculate moving-average for sleep-cycle usage.
-    sc_usage_mavg = moving_sum(sc_usage_ints, N)
-
     # Load names of all sleep-notes.
     sleepnote_names = load_translated_sleepnote_names_from_file()
     for sleepnote in tqdm(sorted(sleepnote_names)):
         # Load timeseries data for sleep-note usage.
         sn_usage_timeseries = load_sleepnote_timeseries_from_file(sleepnote)
-        sn_usage_bools = sn_usage_timeseries.values
+        dates = sn_usage_timeseries.dates
+        values = sn_usage_timeseries.values
         # Convert boolean usage time-series to integers.
-        sn_usage_ints = [
-            {True: 1, False: 0, None: 0}[b] for b in sn_usage_bools
-        ]
+        values = np.array([ {True: 1, False: 0, None: 0}[b] for b in values])
+        sn_usage_ints = TimeSeries(dates, values)
         # Calculate moving-average for sleep-note usage.
-        sn_usage_mavg = moving_sum(sn_usage_ints, N)
-        sn_usage_mavg = np.array([
-            sn_usage_mavg[i] / sc_usage_mavg[i]
-            if sc_usage_mavg[i] > 0 else None
-            for i in range(len(dates))
-        ])
+        sn_usage_mavg = sn_usage_ints.moving_average(N)
 
         # Plot moving-average sleep-note usage.
         plt.plot(dates, sn_usage_mavg, color="orange")
+
         # Configure plot.
         ax = plt.gca()
         ax.spines['top'].set_visible(False)
@@ -69,6 +52,6 @@ def plot_moving_average():
 
         # Save to file & clear plot.
         filename = f"{sleepnote}.png"
-        path_to_savefile = os.path.join(path_to_figures, filename)
+        path_to_savefile = os.path.join(PATH_TO_FIGURES, filename)
         plt.savefig(path_to_savefile)
         fig.clear()
