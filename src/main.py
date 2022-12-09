@@ -34,11 +34,12 @@ def visualize():
     print()
     data_visualization.sleep_history.sleep_snake.plot_sleep_snake()
     data_visualization.sleep_cycle.usage.plot_sleep_cycle_usage()
-    data_visualization.sleep_notes.moving_average.plot_moving_average()
+    data_visualization.sleep_history.histograms.plot_histograms()
+    data_visualization.sleep_notes.usage.plot_moving_average()
 
 
 if __name__ == "__main__":
     collect()
     prepare()
-    process()
+    # process()
     visualize()

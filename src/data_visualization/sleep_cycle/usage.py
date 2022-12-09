@@ -48,3 +48,4 @@ def plot_sleep_cycle_usage():
         PATH_TO_FIGURES, "sleep_cycle", "usage.png"
     )
     plt.savefig(path_to_savefile)
+    plt.close()

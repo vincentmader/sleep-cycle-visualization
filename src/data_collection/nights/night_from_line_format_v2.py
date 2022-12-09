@@ -19,7 +19,7 @@ def get_night_from_line_format_v2(split):
     air_pressure_in_pa = None if split[8] == "" else float(split[8])
     city_name = None if split[9] == "" else split[9]
     nr_of_moves_per_h = None if split[10] in ["", "0"] else float(split[10])
-    measurement_duration_in_s = None if split[11] == "" else float(split[11])
+    measurement_duration_in_h = None if split[11] == "" else float(split[11])/3600
     time_asleep_in_h = None if split[11] == "" else float(split[12])/3600
     time_before_sleep_in_h = None if split[13] == "" else float(split[13])/3600
     window_start = None if split[14] == "" else get_date_from_str(split[14])
@@ -34,7 +34,7 @@ def get_night_from_line_format_v2(split):
         date,
         measurement_start,
         measurement_end,
-        measurement_duration_in_s,
+        measurement_duration_in_h,
         sleep_quality,
         sleep_notes,
         wake_up_mood,

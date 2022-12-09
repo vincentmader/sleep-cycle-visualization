@@ -3,7 +3,7 @@ import os
 
 import numpy as np
 
-from config import PATH_TO_DATA
+from config import PATH_TO_DATA_OUT
 from utils.cprint import cprint
 from utils.file_io import load_from_pickle
 from utils.file_io import save_to_pickle
@@ -15,7 +15,7 @@ def get_sleep_history_timeseries():
     cprint(" Loading bed-times...")
 
     # Load "nights" dataset from file.
-    path_to_savefile = os.path.join(PATH_TO_DATA, "out", "nights", "nights.p")
+    path_to_savefile = os.path.join(PATH_TO_DATA_OUT, "nights", "nights.p")
     nights = load_from_pickle(path_to_savefile)
 
     # Initialize timeseries dictionaries.
@@ -109,7 +109,7 @@ def get_sleep_history_timeseries():
     ]
 
     # Save to file.
-    path_to_savefiles = os.path.join(PATH_TO_DATA, "out", "sleep_history")
+    path_to_savefiles = os.path.join(PATH_TO_DATA_OUT, "sleep_history")
     for filename, dataset in filenames_and_datasets:
         dates = np.array(sorted([d for d in dataset.keys()]))
         values = np.array([dataset[d] for d in dates])

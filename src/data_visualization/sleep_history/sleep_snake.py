@@ -6,15 +6,14 @@ import numpy as np
 
 from config import MPL_THEME
 from config import PATH_TO_FIGURES
-from config import PATH_TO_DATA
+from config import PATH_TO_DATA_OUT
 from utils.cprint import cprint
 from utils.file_io import load_from_pickle
 from utils.dates import get_all_dates
-from utils.timeseries import moving_avg
 from utils.timeseries import TimeSeries
 
 # Define path to save-file directory for sleep-history datasets.
-PATH_TO_SAVEFILES = os.path.join(PATH_TO_DATA, "out", "sleep_history")
+PATH_TO_SAVEFILES = os.path.join(PATH_TO_DATA_OUT, "sleep_history")
 # Define moving-average window-size.
 N = 50
 
@@ -42,7 +41,7 @@ def reformat_timeseries_data(
         start = start.hour\
             + start.minute / 60\
             + start.second / 3600
-        duration = duration / 3600
+        duration = duration
         end = end.hour\
             + end.minute / 60\
             + end.second / 3600
@@ -68,26 +67,23 @@ def plot_sleep_snake():
     # Load timeseries data for measurement-start.
     filename = "measurement_start.p"
     path_to_savefile = os.path.join(PATH_TO_SAVEFILES, filename)
-    timeseries_for_measurement_start = load_from_pickle(path_to_savefile)
+    measurement_starts = load_from_pickle(path_to_savefile)
     # Load timeseries data for measurement-end.
     filename = "measurement_end.p"
     path_to_savefile = os.path.join(PATH_TO_SAVEFILES, filename)
-    timeseries_for_measurement_end = load_from_pickle(path_to_savefile)
+    measurement_ends = load_from_pickle(path_to_savefile)
     # Load timeseries data for measurement-duration (in seconds).
-    filename = "measurement_duration_in_s.p"
+    filename = "measurement_duration_in_h.p"
     path_to_savefile = os.path.join(PATH_TO_SAVEFILES, filename)
-    timeseries_for_measurement_duration = load_from_pickle(path_to_savefile)
+    measurement_durations_in_h = load_from_pickle(path_to_savefile)
 
     res = reformat_timeseries_data(
         all_dates,
-        timeseries_for_measurement_start,
-        timeseries_for_measurement_end,
-        timeseries_for_measurement_duration
+        measurement_starts,
+        measurement_ends,
+        measurement_durations_in_h
     )
-    dates = res[0]
-    measurement_starts_in_h = res[1]
-    measurement_ends_in_h = res[2]
-    measurement_durations_in_h = res[3]
+    dates, starts_in_h, ends_in_h, durations_in_h = res
 
     # Create figure.
     plt.style.use(MPL_THEME)
@@ -95,18 +91,18 @@ def plot_sleep_snake():
 
     plt.bar(
         dates,
-        measurement_durations_in_h,
-        bottom=measurement_starts_in_h,
+        durations_in_h,
+        bottom=starts_in_h,
         width=td(days=1),
         color="gray"
     )
-    measurement_starts_in_h = TimeSeries(dates, measurement_starts_in_h)
-    measurement_starts_in_h = measurement_starts_in_h.moving_average(N)
-    measurement_ends_in_h = TimeSeries(dates, measurement_ends_in_h)
-    measurement_ends_in_h = measurement_ends_in_h.moving_average(N)
+    starts_in_h = TimeSeries(dates, starts_in_h)
+    starts_in_h = starts_in_h.moving_average(N)
+    ends_in_h = TimeSeries(dates, ends_in_h)
+    ends_in_h = ends_in_h.moving_average(N)
 
-    plt.plot(dates, measurement_starts_in_h.values, "green")
-    plt.plot(dates, measurement_ends_in_h.values, "red")
+    plt.plot(dates, starts_in_h.values, "green")
+    plt.plot(dates, ends_in_h.values, "red")
 
     # Configure plot.
     ax = plt.gca()
@@ -128,3 +124,4 @@ def plot_sleep_snake():
         PATH_TO_FIGURES, "sleep_history", "sleep_snake.png"
     )
     plt.savefig(path_to_savefile)
+    plt.close()

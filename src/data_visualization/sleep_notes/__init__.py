@@ -1,1 +1,1 @@
-from .moving_average import plot_moving_average
+from .usage import plot_moving_average

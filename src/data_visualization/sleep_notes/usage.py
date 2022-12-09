@@ -13,7 +13,7 @@ from utils.file_io import load_translated_sleepnote_names_from_file
 # Define moving-average window-size.
 N = 50
 # Define path to figures directory.
-PATH_TO_FIGURES = os.path.join(PATH_TO_FIGURES, "sleep_notes")
+PATH_TO_FIGURES = os.path.join(PATH_TO_FIGURES, "sleep_notes", "timeseries", "moving average")
 
 
 def plot_moving_average():

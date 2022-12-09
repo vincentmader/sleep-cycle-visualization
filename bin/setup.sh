@@ -7,9 +7,6 @@
     ../venv/bin/pip3 install -r ../requirements.txt
 
 #   Install colored-echo utility function.
-    git clone https://github.com/vincentmader/colored-echo.sh ./utils/cprint
-
-#   Create directory hierarchy.
-    mkdir "../data/nights/"
-    mkdir "../data/time_series/"
-    mkdir "../data/time_series/sleep_notes/"
+    url="https://github.com/vincentmader/colored-echo.sh"
+    target="./utils/cprint"
+    [ -d $target ] || git clone $url $target
