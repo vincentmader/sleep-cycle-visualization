@@ -1,6 +1,7 @@
+*.pyc
 .DS_Store
+/bin/utils/cprint
 /in.nosync/
 /out.nosync/
+/tmp/
 /venv/
-__pycache__/
-/bin/utils/cprint

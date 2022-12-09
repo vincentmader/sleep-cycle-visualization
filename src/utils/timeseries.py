@@ -44,7 +44,7 @@ class TimeSeries:
                     M += 1
                     S += value
             val = S / M if M > 0 else None
-            # val = correct_for_start(i, val, i_start, N)
+            val = correct_for_start(i, val, i_start, N)
             val = correct_for_portugal(date, val, N)
             mavg = np.append(mavg, val)
         return TimeSeries(self.dates, mavg)

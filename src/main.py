@@ -41,5 +41,5 @@ def visualize():
 if __name__ == "__main__":
     collect()
     prepare()
-    # process()
+    process()
     visualize()

@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 import config as cfg
 from utils.file_io import load_from_pickle
+from utils.cprint import cprint
 
 PATH_TO_HISTORY = os.path.join(cfg.PATH_TO_DATA_OUT, "sleep_history")
 PATH_TO_FIGURES = os.path.join(cfg.PATH_TO_FIGURES, "sleep_history", "histograms")
@@ -71,6 +72,8 @@ NAMES_D = [
 
 
 def plot_histograms():
+    cprint(" Plotting sleep-history histograms...")
+
     for dataset_name in DATASET_NAMES:
         filename = f"{dataset_name}.p"
         path_to_savefile = os.path.join(PATH_TO_HISTORY, filename)
@@ -85,7 +88,7 @@ def plot_histograms():
 
             x = sorted(histogram.keys())
             y = [histogram[i] for i in x]
-            plt.bar(x, y)
+            plt.bar(x, y, color="orange")
             
             plt.xlim(x[0] - 0.5, x[-1] + 0.5)
             xtick_locs = range(0, 24+1, 3)
@@ -100,17 +103,17 @@ def plot_histograms():
         elif dataset_name in NAMES_B:
             x = timeseries.values
             x = [i for i in x if i != None]
-            plt.hist(x, bins=50)
+            plt.hist(x, bins=50, histtype="step", color="orange")
 
         elif dataset_name in NAMES_C:
             x = timeseries.values
             x = [i for i in x if i != None]
-            plt.hist(x, bins=3)
+            plt.hist(x, bins=3, color="orange")
 
         elif dataset_name in NAMES_D:
             x = timeseries.values
             x = [i for i in x if i != None]
-            plt.hist(x, bins=100)
+            plt.hist(x, bins=100, histtype="step", color="orange")
 
         else:
             continue
