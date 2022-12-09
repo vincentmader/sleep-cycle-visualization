@@ -1,3 +1,6 @@
+from datetime import datetime as dt
+from datetime import timedelta as td
+
 import numpy as np
 
 from utils.dates import get_all_dates
@@ -29,8 +32,10 @@ class TimeSeries:
         return np.mean(self.values)
 
     def moving_average(self, N):
+        i_start = get_idx_of_first_not_none_entry(self.values)
+
         mavg = np.array([])
-        for i, _ in enumerate(self.dates):
+        for i, date in enumerate(self.dates):
             M = 0
             S = 0
             for j in range(N):
@@ -38,9 +43,33 @@ class TimeSeries:
                 if value != None:
                     M += 1
                     S += value
-            val = S / M if M > 0 else 0
+            val = S / M if M > 0 else None
+            # val = correct_for_start(i, val, i_start, N)
+            val = correct_for_portugal(date, val, N)
             mavg = np.append(mavg, val)
         return TimeSeries(self.dates, mavg)
+
+
+def correct_for_start(idx, value, idx_start, N):
+    if idx < idx_start + N:
+        return None
+    return value
+
+
+def get_idx_of_first_not_none_entry(values):
+    for i, value in enumerate(values):
+        if value != None:
+            return i
+
+
+def correct_for_portugal(date, value, N):
+    PORTUGAL_START = dt(2021, 1, 13)
+    PORTUGAL_END = dt(2021, 5, 31)
+    if PORTUGAL_START < date + td(days=N) < PORTUGAL_END:
+        return None
+    if PORTUGAL_START < date - td(days=N) < PORTUGAL_END:
+        return None
+    return value
 
 
 def initialize_timeseries(initial_value=None):
