@@ -1,7 +1,6 @@
 import os
 
 import matplotlib.pyplot as plt
-import numpy as np
 from tqdm import tqdm
 
 from config import MPL_THEME
@@ -9,11 +8,10 @@ from config import PATH_TO_FIGURES
 from utils.cprint import cprint
 from utils.file_io import load_sleepnote_timeseries_from_file
 from utils.file_io import load_translated_sleepnote_names_from_file
-from utils.timeseries import TimeSeries
 
 
 # Define moving-average window-size.
-N = 30
+N = 50
 # Define path to figures directory.
 PATH_TO_FIGURES = os.path.join(PATH_TO_FIGURES, "sleep_notes")
 
@@ -31,12 +29,8 @@ def plot_moving_average():
         # Load timeseries data for sleep-note usage.
         sn_usage_timeseries = load_sleepnote_timeseries_from_file(sleepnote)
         dates = sn_usage_timeseries.dates
-        values = sn_usage_timeseries.values
-        # Convert boolean usage time-series to integers.
-        values = np.array([ {True: 1, False: 0, None: 0}[b] for b in values])
-        sn_usage_ints = TimeSeries(dates, values)
         # Calculate moving-average for sleep-note usage.
-        sn_usage_mavg = sn_usage_ints.moving_average(N)
+        sn_usage_mavg = sn_usage_timeseries.moving_average(N)
 
         # Plot moving-average sleep-note usage.
         plt.plot(dates, sn_usage_mavg, color="orange")

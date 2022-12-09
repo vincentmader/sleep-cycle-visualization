@@ -24,17 +24,22 @@ class TimeSeries:
     def __div__(self, rhs):
         return TimeSeries(self.dates, self.values / rhs)
 
+    @property
+    def average(self):
+        return np.mean(self.values)
+
     def moving_average(self, N):
         mavg = np.array([])
         for i, _ in enumerate(self.dates):
             M = 0
             S = 0
             for j in range(N):
-                value = self.values[i - j]
+                value = self.values[max(0, i - j)]
                 if value != None:
                     M += 1
                     S += value
-            mavg = np.append(mavg, S / M)
+            val = S / M if M > 0 else 0
+            mavg = np.append(mavg, val)
         return TimeSeries(self.dates, mavg)
 
 
