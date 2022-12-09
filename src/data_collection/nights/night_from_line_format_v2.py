@@ -20,8 +20,8 @@ def get_night_from_line_format_v2(split):
     city_name = None if split[9] == "" else split[9]
     nr_of_moves_per_h = None if split[10] in ["", "0"] else float(split[10])
     measurement_duration_in_s = None if split[11] == "" else float(split[11])
-    time_asleep_in_s = None if split[11] == "" else float(split[12])
-    time_before_sleep_in_s = None if split[13] == "" else float(split[13])
+    time_asleep_in_h = None if split[11] == "" else float(split[12])/3600
+    time_before_sleep_in_h = None if split[13] == "" else float(split[13])/3600
     window_start = None if split[14] == "" else get_date_from_str(split[14])
     window_end = None if split[15] == "" else get_date_from_str(split[15])
     did_snore = {"false": False, "true": True}[split[16]]
@@ -45,8 +45,8 @@ def get_night_from_line_format_v2(split):
         air_pressure_in_pa=air_pressure_in_pa,
         city_name=city_name,
         nr_of_moves_per_h=nr_of_moves_per_h,
-        time_asleep_in_s=time_asleep_in_s,
-        time_before_sleep_in_s=time_before_sleep_in_s,
+        time_asleep_in_h=time_asleep_in_h,
+        time_before_sleep_in_h=time_before_sleep_in_h,
         window_start=window_start,
         window_end=window_end,
         did_snore=did_snore,

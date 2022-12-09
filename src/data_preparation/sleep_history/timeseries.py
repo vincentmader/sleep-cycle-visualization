@@ -21,8 +21,8 @@ def get_sleep_history_timeseries():
     # Initialize timeseries dictionaries.
     timeseries_for_measurement_start = initialize_timeseries_dict()
     timeseries_for_measurement_end = initialize_timeseries_dict()
-    timeseries_for_time_asleep_in_s = initialize_timeseries_dict()
-    timeseries_for_time_before_sleep_in_s = initialize_timeseries_dict()
+    timeseries_for_time_asleep_in_h = initialize_timeseries_dict()
+    timeseries_for_time_before_sleep_in_h = initialize_timeseries_dict()
     timeseries_for_sleep_start = initialize_timeseries_dict()
     timeseries_for_sleep_end = initialize_timeseries_dict()
     timeseries_for_measurement_duration = initialize_timeseries_dict()
@@ -52,25 +52,25 @@ def get_sleep_history_timeseries():
         measurement_end = night.measurement_end
         timeseries_for_measurement_end[date] = measurement_end
 
-        time_before_sleep_in_s = night.time_before_sleep_in_s
-        timeseries_for_time_before_sleep_in_s[date] = time_before_sleep_in_s
+        time_before_sleep_in_h = night.time_before_sleep_in_h 
+        timeseries_for_time_before_sleep_in_h[date] = time_before_sleep_in_h
 
-        time_asleep_in_s = night.time_asleep_in_s
-        timeseries_for_time_asleep_in_s[date] = time_asleep_in_s
+        time_asleep_in_h = night.time_asleep_in_h
+        timeseries_for_time_asleep_in_h[date] = time_asleep_in_h
 
-        if time_before_sleep_in_s != None:
-            sleep_start = measurement_end + td(seconds=time_before_sleep_in_s)
+        if time_before_sleep_in_h != None:
+            sleep_start = measurement_end + td(seconds=time_before_sleep_in_h)
         else:
             sleep_start = None
         timeseries_for_sleep_start[date] = sleep_start
 
-        if sleep_start != None and time_asleep_in_s != None:
-            sleep_end = sleep_start + td(seconds=time_asleep_in_s)
+        if sleep_start != None and time_asleep_in_h != None:
+            sleep_end = sleep_start + td(hours=time_asleep_in_h)
         else:
             sleep_end = None
         timeseries_for_sleep_end[date] = sleep_end
 
-        timeseries_for_measurement_duration[date] = night.measurement_duration_in_s
+        timeseries_for_measurement_duration[date] = night.measurement_duration_in_h
         timeseries_for_sleep_quality[date] = night.sleep_quality
         timeseries_for_wakeup_mood[date] = night.wake_up_mood
         timeseries_for_heart_rate[date] = night.heart_rate
@@ -88,11 +88,11 @@ def get_sleep_history_timeseries():
     filenames_and_datasets = [
         ("measurement_start", timeseries_for_measurement_start),
         ("measurement_end", timeseries_for_measurement_end),
-        ("time_before_sleep_in_s", timeseries_for_time_before_sleep_in_s),
-        ("time_asleep_in_s", timeseries_for_time_asleep_in_s),
+        ("time_before_sleep_in_h", timeseries_for_time_before_sleep_in_h),
+        ("time_asleep_in_h", timeseries_for_time_asleep_in_h),
         ("sleep_start", timeseries_for_sleep_start),
         ("sleep_end", timeseries_for_sleep_end),
-        ("measurement_duration_in_s", timeseries_for_measurement_duration),
+        ("measurement_duration_in_h", timeseries_for_measurement_duration),
         ("sleep_quality", timeseries_for_sleep_quality),
         ("wakeup_mood", timeseries_for_wakeup_mood),
         ("heart_rate", timeseries_for_heart_rate),

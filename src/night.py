@@ -4,7 +4,7 @@ class Night:
         date,
         measurement_start,
         measurement_end,
-        measurement_duration_in_s,
+        measurement_duration_in_h,
         sleep_quality,
         sleep_notes,
         wake_up_mood,
@@ -15,8 +15,8 @@ class Night:
         air_pressure_in_pa=None,
         city_name=None,
         nr_of_moves_per_h=None,
-        time_asleep_in_s=None,
-        time_before_sleep_in_s=None,
+        time_asleep_in_h=None,
+        time_before_sleep_in_h=None,
         window_start=None,
         window_end=None,
         did_snore=None,
@@ -36,9 +36,9 @@ class Night:
         self.air_pressure_in_pa = air_pressure_in_pa
         self.city_name = city_name
         self.nr_of_moves_per_h = nr_of_moves_per_h
-        self.measurement_duration_in_s = measurement_duration_in_s
-        self.time_asleep_in_s = time_asleep_in_s
-        self.time_before_sleep_in_s = time_before_sleep_in_s
+        self.measurement_duration_in_h = measurement_duration_in_h
+        self.time_asleep_in_h = time_asleep_in_h
+        self.time_before_sleep_in_h = time_before_sleep_in_h
         self.window_start = window_start
         self.window_end = window_end
         self.did_snore = did_snore

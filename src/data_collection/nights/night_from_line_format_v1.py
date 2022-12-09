@@ -12,7 +12,7 @@ def get_night_from_line_format_v1(split):
     )
     sleep_quality = float(split[2][:-1]) / 100
     tmp = split[3].split(":")
-    measurement_duration_in_s = (float(tmp[0])*60 + float(tmp[1])) * 60
+    measurement_duration_in_h = float(tmp[0]) + float(tmp[1])/60
     wake_up_mood = {"": None, ":)": 1, ":|": 0, ":(": -1}[split[4]]
     sleep_notes = [] if split[5] == "" else split[5].split(":")
     heart_rate = None if split[6] == "" else float(split[6])
@@ -22,7 +22,7 @@ def get_night_from_line_format_v1(split):
         date,
         measurement_start,
         measurement_end,
-        measurement_duration_in_s,
+        measurement_duration_in_h,
         sleep_quality,
         sleep_notes,
         wake_up_mood,
